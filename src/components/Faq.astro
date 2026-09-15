@@ -1,0 +1,97 @@
+---
+import { faq } from '../data/content.js';
+/* Single-open accordion, first item open by default. The open item is marked
+   in the server-rendered HTML, so the content is readable before JS loads and
+   remains readable if it never does. */
+---
+<div class="faq" data-faq>
+  {faq.map((item, i) => (
+    <div class="faq__item" class:list={['faq__item', i === 0 && 'is-open']}>
+      <h3 class="faq__h">
+        <button
+          type="button"
+          class="faq__btn"
+          aria-expanded={i === 0 ? 'true' : 'false'}
+          aria-controls={`faq-panel-${i}`}
+          id={`faq-btn-${i}`}
+        >
+          <span>{item.q}</span>
+          <span class="faq__icon" aria-hidden="true">+</span>
+        </button>
+      </h3>
+      <div class="faq__panel" id={`faq-panel-${i}`} role="region" aria-labelledby={`faq-btn-${i}`}>
+        <p class="faq__a">{item.a}</p>
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .faq { border-top: 1px solid var(--hairline-conc-2); }
+  .faq__item { border-bottom: 1px solid var(--hairline-conc-2); }
+
+  .faq__h { margin: 0; font-family: var(--font-body); }
+  .faq__btn {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    text-align: left;
+    padding: 24px 0;
+    font-size: clamp(17px, 1.5vw, 20px);
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--ink);
+    transition: color 260ms var(--ease);
+  }
+  .faq__btn:hover { color: var(--signal); }
+
+  .faq__icon {
+    flex-shrink: 0;
+    font-size: 26px;
+    line-height: 1;
+    font-weight: 400;
+    color: var(--signal);
+    transition: transform 460ms var(--ease);
+  }
+  .faq__item.is-open .faq__icon { transform: rotate(135deg); }
+
+  .faq__panel {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 560ms var(--ease), opacity 400ms ease;
+  }
+  .faq__item.is-open .faq__panel { max-height: 600px; opacity: 1; }
+
+  .faq__a {
+    padding-bottom: 26px;
+    max-width: 68ch;
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--body-grey);
+    text-wrap: pretty;
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-faq]').forEach((group) => {
+    const items = Array.from(group.querySelectorAll('.faq__item'));
+    items.forEach((item) => {
+      const btn = item.querySelector('.faq__btn') as HTMLButtonElement | null;
+      if (!btn) return;
+      btn.addEventListener('click', () => {
+        const wasOpen = item.classList.contains('is-open');
+        items.forEach((other) => {
+          other.classList.remove('is-open');
+          other.querySelector('.faq__btn')?.setAttribute('aria-expanded', 'false');
+        });
+        if (!wasOpen) {
+          item.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  });
+</script>

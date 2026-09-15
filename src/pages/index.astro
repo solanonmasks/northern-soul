@@ -1,0 +1,579 @@
+---
+import Base from '../layouts/Base.astro';
+import Marquee from '../components/Marquee.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import Faq from '../components/Faq.astro';
+import { site } from '../data/site.js';
+import { homeServices, selectedWork, processSteps, testimonials, homeAreas } from '../data/content.js';
+
+const stats = [
+  { value: '2019',     count: 2019, label: 'Family-run since' },
+  { value: '48 HRS',   count: 48, post: ' HRS', label: 'To your written scope' },
+  { value: 'ONE LEAD', label: 'Your contact, whole build' },
+  { value: 'TURN-KEY', label: 'Design, build & finish' },
+];
+
+const baStats = [
+  ['Wall out',   'Kitchen joined to living'],
+  ['Full gut',   'Down to the studs'],
+  ['One list',   'Every trade managed by us'],
+  ['Fixed price','Locked to the scope'],
+];
+
+const reviewStrip = [
+  { title: 'Referred', body: 'Most of our work comes from past clients and the trades we work beside.' },
+  { title: 'Repeated', body: 'Kitchen first, bathroom next, then the basement. We are usually back.' },
+  { title: 'Reviewed', body: 'Every job ends with an honest ask for a review. We live on them.' },
+];
+
+const whyPoints = [
+  { title: "A scope that doesn't move", body: 'Written and itemised before demolition. It changes only when you change it, in writing.' },
+  { title: 'One number for the whole build', body: 'Norbert runs the site, Michelle runs design. You are never chasing an office to find out what happens next.' },
+  { title: 'We come back', body: 'Our workmanship stands behind every finish we install. If something settles, shifts or fails, we return and fix it.' },
+];
+---
+<Base
+  title="Renovation Contractor Vancouver & Fraser Valley | Northern Soul Renovation"
+  description="Family-run design–build contractor for kitchen, bathroom, whole-home and commercial renovations across Greater Vancouver and the Fraser Valley. Free written scope in 48 hours."
+  active="home"
+>
+  <!-- ===================================================== 1. Hero ===== -->
+  <section class="hero">
+    <div class="hero__photo" data-parallax="0.07">
+      <div class="hero__img ken"></div>
+    </div>
+    <div class="hero__scrim hero__scrim--h"></div>
+    <div class="hero__scrim hero__scrim--v"></div>
+
+    <div class="hero__inner">
+      <div class="hero__trust hero-rise" style="--rise-delay:80ms">
+        <span class="hero__stars">★★★★★</span>
+        <span class="hero__trust-text">Trusted by homeowners &amp; business owners across the Lower Mainland</span>
+      </div>
+
+      <h1 class="display h1-hero hero__h1 hero-rise" style="--rise-delay:200ms">
+        Renovations with soul. <span class="hero__accent">Built to last.</span>
+      </h1>
+
+      <p class="hero__lead hero-rise" style="--rise-delay:380ms">
+        Family-run design–build for kitchens, bathrooms, whole homes and commercial
+        spaces across Greater Vancouver and the Fraser Valley. One crew, one contact,
+        from the first drawing to the final walkthrough.
+      </p>
+
+      <div class="hero__ctas hero-rise" style="--rise-delay:520ms">
+        <a href="/estimate/" class="btn hero__cta-primary" data-magnetic>Get my free estimate →</a>
+        <a href={site.phoneHref} class="btn hero__cta-ghost" data-magnetic>Call {site.phone}</a>
+      </div>
+
+      <div class="hero__points hero-rise" style="--rise-delay:660ms">
+        <span>Licensed &amp; insured</span>
+        <span>Fixed written scope</span>
+        <span>One project lead, start to finish</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================= 2. Stat bar ===== -->
+  <section class="bg-ink">
+    <div class="container">
+      <div class="stats">
+        {stats.map((s, i) => (
+          <div class="stats__cell reveal" style={`--reveal-delay:${i * 90}ms`}>
+            {s.count ? (
+              <div class="stats__value" data-count={s.count} data-count-post={s.post || ''}>{s.value}</div>
+            ) : (
+              <div class="stats__value">{s.value}</div>
+            )}
+            <div class="stats__label">{s.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================== 3. Marquee ===== -->
+  <Marquee />
+
+  <!-- ================================================= 4. Services ===== -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="sec-head">
+        <h2 class="display h2-lg reveal" style="--reveal-delay:70ms">Six ways we change a space.</h2>
+        <p class="lead sec-head__body">
+          Residential and commercial, design through final finish. Every trade is ours
+          to coordinate — you approve a scope, then you approve the result.
+        </p>
+      </div>
+
+      <div class="hairgrid svc-grid">
+        {homeServices.map((s, i) => (
+          <a href={s.href} class="svc reveal" style={`--reveal-delay:${i * 70}ms`}>
+            <div class="svc__media zoom ratio-4-3">
+              <img src={s.img} alt={s.alt} class="cover" loading="lazy" decoding="async" width="1200" height="900" />
+            </div>
+            <div class="svc__text">
+              <h3 class="display h3-card">{s.title}</h3>
+              <p class="body-text svc__body">{s.body}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= 5. Before/after ===== -->
+  <section class="section bg-concrete">
+    <div class="container">
+      <div class="sec-head">
+        <h2 class="display h2-lg reveal" style="--reveal-delay:70ms">Dated galley, opened into one room.</h2>
+        <p class="lead sec-head__body">
+          Wall between the kitchen and living room removed, new cabinetry and stone in,
+          and a single flooring run tying the whole floor together. Drag the handle to see it.
+        </p>
+      </div>
+
+      <BeforeAfter
+        afterSrc="/images/kitchen-shaker.jpg"
+        afterAlt="The finished kitchen after the remodel, with shaker cabinets and stone counters"
+        beforeSrc="/images/kitchen-before.jpg"
+        beforeAlt="The original oak galley kitchen before renovation"
+      />
+
+      <div class="hairgrid hairgrid--concrete ba-stats">
+        {baStats.map(([t, b]) => (
+          <div class="ba-stats__cell">
+            <div class="display ba-stats__t">{t}</div>
+            <div class="caption">{b}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================== 6. Selected work ===== -->
+  <section class="section" id="work">
+    <div class="container">
+      <div class="sec-head sec-head--row">
+        <h2 class="display h2-lg reveal" style="--reveal-delay:70ms">Built across the Lower Mainland.</h2>
+        <a href="/projects/" class="link-cta">All projects →</a>
+      </div>
+
+      <div class="work-grid">
+        {selectedWork.map((p, i) => (
+          <a href={p.href} class="work wipe lift" style={`--reveal-delay:${i * 90}ms`}>
+            <div class="work__media zoom ratio-3-4">
+              <img src={p.img} alt={p.alt} class="cover" loading="lazy" decoding="async" width="900" height="1200" />
+            </div>
+            <div class="work__cap">
+              <span class="work__title">{p.title}</span>
+              <span class="work__meta">{p.meta}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================== 7. Process ===== -->
+  <section class="section bg-ink" id="process">
+    <div class="container">
+      <div class="sec-head">
+        <h2 class="display h2-lg reveal" style="--reveal-delay:70ms">How a build actually runs.</h2>
+        <p class="lead lead--on-ink sec-head__body">
+          Most renovation horror stories are really communication stories. You will always
+          know which stage you are on, who is on site tomorrow, and what it costs.
+        </p>
+      </div>
+
+      <div class="proc-grid">
+        {processSteps.map((s, i) => (
+          <div class="proc reveal" style={`--reveal-delay:${i * 90}ms`}>
+            <h3 class="display h3-card">{s.title}</h3>
+            <p class="body-text body-text--on-ink proc__body">{s.body}</p>
+            <div class="proc__note">{s.note}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================== 8. Reviews ===== -->
+  <section class="section" id="reviews">
+    <div class="container">
+      <div class="hairgrid rev-strip reveal">
+        <div class="rev-strip__google">
+          <div class="rev-strip__stars">★★★★★</div>
+          <div class="display rev-strip__rating">5.0 Google</div>
+          <div class="rev-strip__sub">Reviewed by local clients</div>
+        </div>
+        {reviewStrip.map((r) => (
+          <div class="rev-strip__cell">
+            <div class="display rev-strip__t">{r.title}</div>
+            <p class="body-text rev-strip__b">{r.body}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="quotes">
+        {testimonials.map((t, i) => (
+          <figure class="quote reveal" style={`--reveal-delay:${i * 80}ms`}>
+            <div class="stars stars--light">★★★★★</div>
+            <blockquote class="quote__q">“{t.quote}”</blockquote>
+            <figcaption class="quote__cap">{t.attribution}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================= 9. Why people hire us === -->
+  <section class="why">
+    <div class="why__media wipe">
+      <div class="why__img"></div>
+    </div>
+    <div class="why__text">
+      <div class="why__inner">
+        <h2 class="display h2-md reveal">A family name on every job site.</h2>
+        <div class="why__points">
+          {whyPoints.map((p, i) => (
+            <div class="why__point reveal" style={`--reveal-delay:${(i + 1) * 80}ms`}>
+              <h3 class="why__point-t">{p.title}</h3>
+              <p class="body-text">{p.body}</p>
+            </div>
+          ))}
+        </div>
+        <a href="/about/" class="link-cta why__cta">Meet the family →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ 10. Service areas ==== -->
+  <section class="section bg-concrete" id="areas">
+    <div class="container areas">
+      <div class="areas__head">
+        <h2 class="display h2-sm reveal" style="--reveal-delay:70ms">Where we build.</h2>
+        <p class="lead areas__lead">
+          From the North Shore out to Abbotsford. If you are anywhere in Greater Vancouver
+          or the Fraser Valley, we will come and scope it.
+        </p>
+      </div>
+      <div class="hairgrid hairgrid--concrete areas__grid reveal" style="--reveal-delay:60ms">
+        {homeAreas.map((a) => <span class="areas__cell">{a}</span>)}
+        <a href="/estimate/" class="areas__cell areas__cell--ask">Not listed? Ask →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================== 11. FAQ ==== -->
+  <section class="section bg-concrete faq-sec" id="faq">
+    <div class="container faq-sec__inner">
+      <div class="faq-sec__aside">
+        <h2 class="display h2-sm reveal" style="--reveal-delay:70ms">What people ask before they call.</h2>
+        <p class="lead faq-sec__lead">
+          Still unsure? Call and ask. We would rather talk you out of the wrong project
+          than sell you one.
+        </p>
+        <a href={site.phoneHref} class="faq-sec__phone">{site.phone}</a>
+      </div>
+      <Faq />
+    </div>
+  </section>
+
+  <!-- ================================================ 12. Final CTA ==== -->
+  <section class="section bg-signal" id="estimate">
+    <div class="container fcta">
+      <div class="reveal">
+        <div class="fcta__eyebrow">Free estimate</div>
+        <h2 class="display h2-md fcta__h">Tell us about the space.</h2>
+        <p class="fcta__body">
+          Send the details and we will come out, measure, and put a written scope in your
+          hands within 48 hours. Free, and there is nothing to sign.
+        </p>
+      </div>
+      <div class="fcta__actions reveal" style="--reveal-delay:90ms">
+        <a href="/estimate/" class="btn btn--on-blue fcta__btn" data-magnetic>Start my estimate →</a>
+        <a href={site.phoneHref} class="fcta__phone">or call {site.phone}</a>
+        <div class="fcta__hours">{site.hours} · Same-day reply</div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---------------------------------------------------------------- hero */
+  .hero { position: relative; background: var(--ink); overflow: hidden; }
+  .hero__photo { position: absolute; left: 0; right: 0; top: -8%; bottom: -8%; overflow: hidden; }
+  .hero__img {
+    position: absolute;
+    inset: 0;
+    background-image: url('/images/hero-interior.jpg');
+    background-size: cover;
+    background-position: center 60%;
+    transform: translate3d(0, var(--parallax-y, 0), 0);
+  }
+  .hero__scrim { position: absolute; inset: 0; }
+  .hero__scrim--h {
+    background: linear-gradient(100deg, rgba(11,13,16,.94) 0%, rgba(11,13,16,.82) 42%, rgba(11,13,16,.35) 100%);
+  }
+  .hero__scrim--v {
+    background: linear-gradient(180deg, rgba(11,13,16,.5) 0%, rgba(11,13,16,0) 30%, rgba(11,13,16,.75) 100%);
+  }
+  .hero__inner {
+    position: relative;
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: clamp(64px, 9vw, 140px) var(--gutter) clamp(48px, 6vw, 96px);
+  }
+  .hero__trust { display: flex; align-items: center; gap: 12px; margin-bottom: 26px; flex-wrap: wrap; }
+  .hero__stars { color: var(--beam); letter-spacing: 0.18em; font-size: 14px; }
+  .hero__trust-text { font-size: 13.5px; font-weight: 500; color: var(--light-grey); letter-spacing: .004em; }
+  .hero__h1 { max-width: 19ch; color: #fff; font-stretch: 122%; }
+  .hero__accent { color: var(--beam); }
+  .hero__lead {
+    margin-top: clamp(24px, 3vw, 36px);
+    max-width: 56ch;
+    font-size: clamp(16px, 1.35vw, 19px);
+    line-height: 1.65;
+    color: var(--light-grey);
+    text-wrap: pretty;
+  }
+  .hero__ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-top: clamp(28px, 3.5vw, 44px); }
+  .hero__cta-primary { background: var(--signal); color: #fff; padding: 19px 30px; font-size: 15px; }
+  .hero__cta-primary:hover { background: #fff; color: var(--ink); }
+  .hero__cta-ghost { border-color: rgba(255,255,255,.32); color: #fff; padding: 19px 30px; font-size: 15px; }
+  .hero__cta-ghost:hover { border-color: #fff; background: rgba(255,255,255,.08); color: #fff; }
+  .hero__points {
+    display: flex;
+    gap: 10px 30px;
+    flex-wrap: wrap;
+    margin-top: clamp(36px, 4.5vw, 64px);
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--light-grey);
+    letter-spacing: .004em;
+  }
+
+  /* --------------------------------------------------------------- stats */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px;
+    background: var(--hairline-dark);
+    border-top: 1px solid var(--hairline-dark);
+    border-bottom: 1px solid var(--hairline-dark);
+  }
+  .stats__cell { background: var(--ink); padding: clamp(32px, 4vw, 52px) clamp(18px, 2vw, 32px); }
+  .stats__value {
+    font-family: var(--font-display);
+    font-stretch: 125%;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: clamp(30px, 3.6vw, 52px);
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+    color: #fff;
+  }
+  .stats__label { margin-top: 12px; font-size: 13.5px; font-weight: 500; color: var(--dim-grey); }
+
+  /* ---------------------------------------------------- section headings */
+  .sec-head {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: clamp(20px, 3vw, 56px);
+    align-items: end;
+    margin-bottom: clamp(36px, 4.5vw, 64px);
+  }
+  .sec-head--row { align-items: baseline; }
+  .sec-head__body { max-width: 52ch; }
+  .bg-ink .sec-head__body { color: var(--light-grey); }
+
+  /* ------------------------------------------------------------ services */
+  .svc-grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  .svc { display: block; color: inherit; padding: 0; }
+  .svc__text { padding: clamp(22px, 2.4vw, 32px); }
+  .svc h3 { color: var(--ink); transition: color 300ms var(--ease); }
+  .svc:hover h3 { color: var(--signal); }
+  .svc__body { margin-top: 14px; max-width: 46ch; }
+
+  /* -------------------------------------------------- before/after stats */
+  .ba-stats { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); margin-top: 1px; border-top: 0; }
+  .ba-stats__cell { padding: clamp(24px, 3vw, 38px) clamp(18px, 2vw, 28px); }
+  .ba-stats__t { font-size: clamp(20px, 2vw, 27px); line-height: 1; color: var(--ink); }
+  .ba-stats__cell .caption { margin-top: 10px; }
+
+  /* ------------------------------------------------------------- my work */
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: clamp(16px, 2vw, 28px);
+  }
+  .work { display: block; color: inherit; }
+  .work__cap {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    border-top: 1px solid var(--hairline);
+    padding-top: 14px;
+    margin-top: 14px;
+  }
+  .work__title { font-size: 15.5px; font-weight: 600; color: var(--ink); }
+  .work__meta { font-size: 13.5px; font-weight: 500; color: var(--muted-grey); }
+
+  /* ------------------------------------------------------------- process */
+  .proc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: clamp(28px, 3.4vw, 52px);
+  }
+  .proc__body { margin-top: 14px; max-width: 48ch; }
+  .proc__note {
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid var(--hairline-dark);
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--beam);
+  }
+
+  /* ------------------------------------------------------------- reviews */
+  .rev-strip { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+  .rev-strip__google {
+    background: var(--signal) !important;
+    padding: clamp(26px, 3vw, 38px);
+  }
+  .rev-strip__stars { color: #fff; letter-spacing: .18em; font-size: 14px; }
+  .rev-strip__rating {
+    margin-top: 12px;
+    font-size: clamp(24px, 2.6vw, 34px);
+    line-height: 1;
+    color: #fff;
+  }
+  .rev-strip__sub { margin-top: 8px; font-size: 13.5px; font-weight: 500; color: var(--on-blue-dim); }
+  .rev-strip__cell { padding: clamp(26px, 3vw, 38px); }
+  .rev-strip__t { font-size: clamp(19px, 1.8vw, 24px); line-height: 1; color: var(--ink); }
+  .rev-strip__b { margin-top: 12px; font-size: 14.5px; }
+
+  .quotes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: clamp(16px, 2vw, 28px);
+    margin-top: clamp(28px, 3.5vw, 48px);
+  }
+  .quote {
+    border: 1px solid var(--hairline);
+    padding: clamp(26px, 3vw, 38px);
+    display: flex;
+    flex-direction: column;
+  }
+  .quote__q {
+    margin: 18px 0 0;
+    font-family: var(--font-display);
+    font-stretch: 105%;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: clamp(17px, 1.5vw, 21px);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    flex: 1;
+  }
+  .quote__cap {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--hairline);
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--muted-grey);
+  }
+
+  /* ----------------------------------------------------------------- why */
+  .why { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); }
+  .why__media { min-height: clamp(320px, 42vw, 640px); overflow: hidden; }
+  .why__img {
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/crew-site.jpg');
+    background-size: cover;
+    background-position: center;
+    background-color: #15181E;
+  }
+  .why__text { display: flex; align-items: center; background: var(--paper); }
+  .why__inner { padding: clamp(48px, 6vw, 96px) clamp(24px, 5vw, 80px); max-width: 640px; }
+  .why__points { margin-top: clamp(28px, 3.4vw, 44px); }
+  .why__point {
+    padding: 24px 0;
+    border-top: 1px solid var(--hairline);
+  }
+  .why__point:last-child { border-bottom: 1px solid var(--hairline); }
+  .why__point-t { font-size: 17px; font-weight: 600; margin-bottom: 8px; color: var(--ink); }
+  .why__cta { margin-top: 32px; }
+
+  /* --------------------------------------------------------------- areas */
+  .areas { display: grid; gap: clamp(32px, 4vw, 56px); }
+  .areas__head { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(20px, 3vw, 48px); align-items: end; }
+  .areas__lead { max-width: 48ch; }
+  .areas__grid { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+  .areas__cell {
+    padding: clamp(18px, 2vw, 26px) clamp(16px, 1.8vw, 24px);
+    font-size: 15.5px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .areas__cell--ask {
+    background: var(--ink) !important;
+    color: #fff;
+    font-weight: 600;
+    transition: background 300ms var(--ease);
+  }
+  .areas__cell--ask:hover { background: var(--signal) !important; }
+
+  /* ----------------------------------------------------------------- faq */
+  .faq-sec__inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: clamp(32px, 4vw, 72px);
+    align-items: start;
+  }
+  .faq-sec__aside { position: sticky; top: 130px; }
+  .faq-sec__lead { margin-top: 20px; max-width: 40ch; }
+  .faq-sec__phone {
+    display: inline-block;
+    margin-top: 24px;
+    font-family: var(--font-display);
+    font-stretch: 115%;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: clamp(22px, 2.4vw, 32px);
+    color: var(--ink);
+    transition: color 260ms var(--ease);
+  }
+  .faq-sec__phone:hover { color: var(--signal); }
+  @media (max-width: 860px) {
+    .faq-sec__aside { position: static; }
+  }
+
+  /* ----------------------------------------------------------- final CTA */
+  .fcta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: clamp(28px, 4vw, 64px);
+    align-items: end;
+  }
+  .fcta__eyebrow { font-size: 14px; font-weight: 600; color: var(--on-blue-dim); margin-bottom: 18px; }
+  .fcta__h { color: #fff; max-width: 14ch; }
+  .fcta__body {
+    margin-top: 20px;
+    font-size: clamp(16px, 1.35vw, 19px);
+    line-height: 1.65;
+    color: var(--on-blue);
+    max-width: 46ch;
+    text-wrap: pretty;
+  }
+  .fcta__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 26px; }
+  .fcta__btn { padding: 19px 30px; font-size: 15px; }
+  .fcta__phone { color: #fff; font-size: 15.5px; font-weight: 600; }
+  .fcta__phone:hover { color: var(--ink); }
+  .fcta__hours { flex-basis: 100%; font-size: 13.5px; font-weight: 500; color: var(--on-blue-dim); }
+</style>

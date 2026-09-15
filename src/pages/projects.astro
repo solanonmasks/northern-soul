@@ -1,0 +1,197 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { projectFilters, featuredProject, projects } from '../data/content.js';
+const f = featuredProject;
+---
+<Base
+  title="Renovation Projects Across Greater Vancouver | Northern Soul Renovation"
+  description="Recent kitchen, bathroom, microcement and commercial renovation projects across Greater Vancouver and the Fraser Valley — designed, built and finished by our own team."
+  active="projects"
+>
+  <PageHero
+    title="Rooms we took apart and gave back better."
+    lead="A selection of residential and commercial work across Greater Vancouver and the Fraser Valley. Every one of these was designed, built and finished by our own team."
+  />
+
+  <!-- Filter chips. Real filtering, not anchor jumps. -->
+  <section class="filters">
+    <div class="container">
+      <div class="filters__row" role="group" aria-label="Filter projects" data-filters>
+        {projectFilters.map((flt, i) => (
+          <button
+            type="button"
+            class:list={['filter', i === 0 && 'is-active']}
+            data-filter={flt.value}
+            aria-pressed={i === 0 ? 'true' : 'false'}
+          >{flt.label}</button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured project -->
+  <section class="section--sm" id={f.id} data-project data-tags="commercial">
+    <div class="container">
+      <div class="sec-head">
+        <h2 class="display h2-md reveal">{f.title}</h2>
+        <p class="lead sec-head__body">{f.body}</p>
+      </div>
+
+      <div class="feat__media wipe zoom ratio-21-9">
+        <img src={f.img} alt={f.alt} class="cover" loading="lazy" decoding="async" width="2400" height="1030" />
+      </div>
+
+      <div class="hairgrid feat__specs reveal">
+        {f.specs.map(([k, v]) => (
+          <div class="feat__spec">
+            <div class="caption">{k}</div>
+            <div class="feat__spec-v">{v}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Project grid -->
+  <section class="section--sm">
+    <div class="container">
+      <div class="pgrid" data-project-grid>
+        {projects.map((p, i) => (
+          <article
+            class="pcard wipe lift"
+            id={p.id}
+            data-project
+            data-tags={p.tags.join(' ')}
+            style={`--reveal-delay:${i * 80}ms`}
+          >
+            <div class="pcard__media zoom ratio-4-3">
+              <img src={p.img} alt={p.alt} class="cover" loading="lazy" decoding="async" width="1200" height="900" />
+            </div>
+            <div class="pcard__cap">
+              <h3 class="pcard__title">{p.title}</h3>
+              <span class="pcard__loc">{p.location}</span>
+            </div>
+            <p class="body-text pcard__body">{p.body}</p>
+          </article>
+        ))}
+      </div>
+      <p class="pgrid__empty" data-empty hidden>No projects in that category yet — try another filter.</p>
+    </div>
+  </section>
+
+  <!-- Photography note -->
+  <section class="section bg-concrete">
+    <div class="container note">
+      <div>
+        <h2 class="display h2-sm reveal">More work, shot properly.</h2>
+        <p class="lead note__body">
+          We are adding recent builds here as they are professionally photographed. If you
+          want to see work close to your own project, ask — we will send the full set.
+        </p>
+      </div>
+      <a href="/estimate/" class="btn btn--primary note__cta" data-magnetic>Request the full portfolio →</a>
+    </div>
+  </section>
+
+  <CtaBand heading="Tell us about the space." />
+</Base>
+
+<style>
+  .filters { border-bottom: 1px solid var(--hairline); }
+  .filters__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: clamp(20px, 2.4vw, 30px) 0;
+  }
+  .filter {
+    border: 1px solid var(--hairline);
+    padding: 11px 18px;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--ink);
+    transition: background 280ms var(--ease), border-color 280ms var(--ease), color 280ms var(--ease);
+  }
+  .filter:hover { border-color: var(--signal); color: var(--signal); }
+  .filter.is-active { background: var(--signal); border-color: var(--signal); color: #fff; }
+
+  .sec-head {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: clamp(20px, 3vw, 56px);
+    align-items: end;
+    margin-bottom: clamp(28px, 3.5vw, 48px);
+  }
+  .sec-head__body { max-width: 54ch; }
+
+  .feat__media { background: var(--ink); }
+  .feat__specs { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); margin-top: 1px; border-top: 0; }
+  .feat__spec { padding: clamp(22px, 2.6vw, 32px) clamp(18px, 2vw, 26px); }
+  .feat__spec-v { margin-top: 8px; font-size: 16px; font-weight: 600; color: var(--ink); }
+
+  .pgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: clamp(24px, 3vw, 44px);
+  }
+  .pcard[hidden] { display: none; }
+  .pcard__cap {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    border-top: 1px solid var(--hairline);
+    padding-top: 16px;
+    margin-top: 16px;
+  }
+  .pcard__title { font-size: clamp(18px, 1.7vw, 21px); font-weight: 600; color: var(--ink); }
+  .pcard__loc { font-size: 13.5px; font-weight: 500; color: var(--muted-grey); white-space: nowrap; }
+  .pcard__body { margin-top: 12px; max-width: 48ch; }
+
+  .pgrid__empty { margin-top: 32px; font-size: 16px; color: var(--body-grey); }
+
+  .note {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: clamp(24px, 3.5vw, 56px);
+    align-items: end;
+  }
+  .note__body { margin-top: 20px; max-width: 52ch; }
+  .note__cta { justify-self: start; }
+</style>
+
+<script>
+  /* Filtering is progressive: without JS every project is visible and the
+     chips simply do nothing. */
+  const row = document.querySelector('[data-filters]');
+  if (row) {
+    const chips = Array.from(row.querySelectorAll('[data-filter]')) as HTMLButtonElement[];
+    const items = Array.from(document.querySelectorAll('[data-project]')) as HTMLElement[];
+    const empty = document.querySelector('[data-empty]') as HTMLElement | null;
+
+    const apply = (value: string) => {
+      let shown = 0;
+      items.forEach((el) => {
+        const tags = (el.getAttribute('data-tags') || '').split(/\s+/);
+        const match = value === 'all' || tags.includes(value);
+        el.hidden = !match;
+        if (match) shown++;
+      });
+      if (empty) empty.hidden = shown > 0;
+    };
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chips.forEach((c) => {
+          c.classList.remove('is-active');
+          c.setAttribute('aria-pressed', 'false');
+        });
+        chip.classList.add('is-active');
+        chip.setAttribute('aria-pressed', 'true');
+        apply(chip.getAttribute('data-filter') || 'all');
+      });
+    });
+  }
+</script>

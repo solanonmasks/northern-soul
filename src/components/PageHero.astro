@@ -1,0 +1,21 @@
+---
+/* Shared ink hero for the inner pages. */
+interface Props {
+  title: string;
+  lead: string;
+}
+const { title, lead } = Astro.props;
+---
+<section class="phero bg-ink">
+  <div class="container phero__inner">
+    <h1 class="display h1-page phero__h1">{title}</h1>
+    <p class="lead lead--on-ink phero__lead">{lead}</p>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .phero { padding: clamp(56px, 7vw, 120px) 0 clamp(48px, 6vw, 92px); }
+  .phero__h1 { color: #fff; max-width: 17ch; }
+  .phero__lead { margin-top: clamp(22px, 2.6vw, 34px); max-width: 60ch; }
+</style>

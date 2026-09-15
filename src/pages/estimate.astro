@@ -1,0 +1,573 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, formEndpoint } from '../data/site.js';
+
+const projectTypes = [
+  'Kitchen remodel',
+  'Bathroom remodel',
+  'Whole home / suite',
+  'Commercial build-out',
+  'Microcement',
+  'Design only',
+];
+
+const budgets = [
+  'Not sure yet — advise me',
+  'Under $25,000',
+  '$25,000 – $60,000',
+  '$60,000 – $120,000',
+  '$120,000 – $250,000',
+  '$250,000+',
+];
+
+const timings = ['As soon as possible', 'Within 3 months', '3 – 6 months', 'Still planning'];
+
+const drawings = [
+  'No — we need design too',
+  'Yes, from a designer or architect',
+  'Rough sketches only',
+];
+
+const next = [
+  ['We call you back', 'Same working day, to understand the project and answer the obvious questions.'],
+  ['Walkthrough on site', 'About an hour. We measure, check what is behind the walls and talk through what is realistic.'],
+  ['Written scope in 48 hours', 'Itemised, with a fixed price and a schedule. Yours to keep, whatever you decide.'],
+];
+---
+<Base
+  title="Free Renovation Estimate | Northern Soul Renovation, Vancouver & Fraser Valley"
+  description="Tell us about your kitchen, bathroom, whole-home or commercial renovation. Free walkthrough, and a written itemised scope with a fixed price within 48 hours."
+  active="estimate"
+>
+  <!-- Ink hero -->
+  <section class="ehero bg-ink">
+    <div class="container ehero__inner">
+      <h1 class="display h1-page ehero__h1">Tell us about the space.</h1>
+      <div>
+        <p class="lead lead--on-ink">
+          Three short steps. We call you back the same working day, book a walkthrough,
+          and put a written scope in your hands within 48 hours.
+        </p>
+        <div class="ehero__points">
+          <span>Free &amp; no obligation</span>
+          <span>Details never shared</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container est">
+      <!-- ============================================ LEFT: the form ==== -->
+      <div class="est__form-col">
+        {!formEndpoint && (
+          <p class="est__warn" role="status">
+            <strong>This form is not connected yet.</strong> Set <code>formEndpoint</code> in
+            <code>src/data/site.js</code> to your inbox or CRM handler before launch —
+            until then submissions are not delivered anywhere.
+          </p>
+        )}
+
+        <form
+          class="est__form"
+          data-estimate-form
+          method="post"
+          action={formEndpoint || undefined}
+          novalidate
+        >
+          <!-- Progress bar: fills Signal Blue as you advance -->
+          <div class="prog" aria-hidden="true">
+            <span class="prog__seg is-on" data-prog="1"></span>
+            <span class="prog__seg" data-prog="2"></span>
+            <span class="prog__seg" data-prog="3"></span>
+          </div>
+
+          <!-- Honeypot: real people never see or fill this -->
+          <div class="est__hp" aria-hidden="true">
+            <label for="company-website">Leave this field empty</label>
+            <input type="text" id="company-website" name="company_website" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <!-- ------------------------------------------------ Step 1 --- -->
+          <fieldset class="step" data-step="1">
+            <legend class="step__legend">
+              <span class="step__count">Step 1 of 3</span>
+              <span class="display h2-sm step__h">What are we building?</span>
+            </legend>
+
+            <div class="types">
+              {projectTypes.map((t, i) => (
+                <label class:list={['type', i === 0 && 'is-on']}>
+                  <input
+                    type="radio"
+                    name="project_type"
+                    value={t}
+                    checked={i === 0}
+                    required
+                  />
+                  <span>{t}</span>
+                </label>
+              ))}
+            </div>
+
+            <div class="step__foot">
+              <span class="caption">Pick the closest match</span>
+              <button type="button" class="btn btn--primary" data-next>Continue →</button>
+            </div>
+          </fieldset>
+
+          <!-- ------------------------------------------------ Step 2 --- -->
+          <fieldset class="step" data-step="2" hidden>
+            <legend class="step__legend">
+              <span class="step__count">Step 2 of 3</span>
+              <span class="display h2-sm step__h">Scope and timing</span>
+            </legend>
+
+            <div class="fields fields--2">
+              <label class="field">
+                <span class="field__l">Budget range</span>
+                <select name="budget">{budgets.map((b) => <option>{b}</option>)}</select>
+              </label>
+              <label class="field">
+                <span class="field__l">When would you like to start?</span>
+                <select name="timing">{timings.map((t) => <option>{t}</option>)}</select>
+              </label>
+              <label class="field">
+                <span class="field__l">City or neighbourhood</span>
+                <input type="text" name="city" autocomplete="address-level2" />
+              </label>
+              <label class="field">
+                <span class="field__l">Do you already have drawings?</span>
+                <select name="drawings">{drawings.map((d) => <option>{d}</option>)}</select>
+              </label>
+            </div>
+
+            <div class="step__foot">
+              <button type="button" class="btn btn--ghost" data-back>← Back</button>
+              <button type="button" class="btn btn--primary" data-next>Continue →</button>
+            </div>
+          </fieldset>
+
+          <!-- ------------------------------------------------ Step 3 --- -->
+          <fieldset class="step" data-step="3" hidden>
+            <legend class="step__legend">
+              <span class="step__count">Step 3 of 3</span>
+              <span class="display h2-sm step__h">Where do we reach you?</span>
+            </legend>
+
+            <div class="fields fields--2">
+              <label class="field">
+                <span class="field__l">Your name</span>
+                <input type="text" name="name" required autocomplete="name" />
+                <span class="field__err" data-err></span>
+              </label>
+              <label class="field">
+                <span class="field__l">Phone</span>
+                <input type="tel" name="phone" required autocomplete="tel"
+                       inputmode="tel" pattern="[0-9 ()+.\-]{10,}" />
+                <span class="field__err" data-err></span>
+              </label>
+            </div>
+            <label class="field">
+              <span class="field__l">Email</span>
+              <input type="email" name="email" required autocomplete="email" />
+              <span class="field__err" data-err></span>
+            </label>
+            <label class="field">
+              <span class="field__l">Anything else we should know?</span>
+              <textarea name="notes" rows="4"></textarea>
+            </label>
+
+            <div class="step__foot">
+              <button type="button" class="btn btn--ghost" data-back>← Back</button>
+              <button type="submit" class="btn btn--primary" data-magnetic>Send my request →</button>
+            </div>
+            <p class="caption step__fine">
+              No obligation · Your details are never shared · Same-day reply Mon–Fri
+            </p>
+          </fieldset>
+        </form>
+
+        <!-- ------------------------------------------- Confirmation --- -->
+        <div class="done" data-done hidden>
+          <div class="done__tick" aria-hidden="true">✓</div>
+          <h2 class="display h2-sm done__h">Request received.</h2>
+          <p class="lead done__b">
+            Thanks — we have your details and we will call you back today to book the
+            walkthrough. If it is urgent, call us directly and we will pick up.
+          </p>
+          <a href={site.phoneHref} class="btn btn--primary">Call {site.phone}</a>
+        </div>
+      </div>
+
+      <!-- =========================================== RIGHT: aside ==== -->
+      <aside class="est__aside">
+        <div class="est__photo wipe zoom ratio-4-3" style="--reveal-delay:90ms">
+          <img src="/images/vanity-mirror.jpg" alt="A finished ensuite renovation"
+               class="cover" loading="lazy" decoding="async" width="1200" height="900" />
+        </div>
+
+        <h2 class="display est__aside-h">What happens next</h2>
+        <ol class="next">
+          {next.map(([t, b]) => (
+            <li class="next__item">
+              <div class="next__t">{t}</div>
+              <div class="body-text next__b">{b}</div>
+            </li>
+          ))}
+        </ol>
+
+        <div class="card">
+          <a href={site.phoneHref} class="card__phone">{site.phone}</a>
+          <div class="card__meta">{site.hours} · {site.city}, {site.region}</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---------------------------------------------------------------- hero */
+  .ehero { padding: clamp(48px, 6vw, 96px) 0 clamp(44px, 5.5vw, 84px); }
+  .ehero__inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: clamp(24px, 3.5vw, 64px);
+    align-items: end;
+  }
+  .ehero__h1 { color: #fff; max-width: 13ch; }
+  .ehero__points {
+    display: flex;
+    gap: 10px 26px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--dim-grey);
+  }
+
+  /* -------------------------------------------------------------- layout */
+  .est {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: clamp(32px, 4.5vw, 80px);
+    align-items: start;
+  }
+  @media (max-width: 900px) { .est { grid-template-columns: 1fr; } }
+
+  .est__warn {
+    border: 1px solid var(--signal);
+    background: var(--pale-blue);
+    color: var(--ink);
+    padding: 16px 18px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  .est__warn code { font-size: 13.5px; background: rgba(27,77,228,.1); padding: 1px 5px; }
+
+  /* ------------------------------------------------------------ progress */
+  .prog { display: flex; gap: 6px; margin-bottom: clamp(30px, 3.5vw, 46px); }
+  .prog__seg {
+    flex: 1;
+    height: 3px;
+    background: var(--hairline);
+    transition: background 420ms var(--ease);
+  }
+  .prog__seg.is-on { background: var(--signal); }
+
+  /* Honeypot — off-screen rather than display:none, which some bots skip */
+  .est__hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  /* --------------------------------------------------------------- steps */
+  .step { border: 0; padding: 0; margin: 0; min-width: 0; }
+  .step__legend { display: block; padding: 0; width: 100%; }
+  .step__count { display: block; font-size: 14px; font-weight: 600; color: var(--signal); margin-bottom: 14px; }
+  .step__h { display: block; padding: 0; color: var(--ink); }
+
+  .step__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: clamp(28px, 3.2vw, 40px);
+  }
+  .step__fine { margin-top: 20px; }
+
+  /* ------------------------------------------------------- type chips -- */
+  .types {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 10px;
+    margin-top: clamp(24px, 3vw, 34px);
+  }
+  .type {
+    display: block;
+    border: 1px solid var(--hairline);
+    background: var(--paper);
+    padding: 17px 18px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 280ms var(--ease), border-color 280ms var(--ease);
+  }
+  .type:hover { border-color: var(--signal); }
+  .type.is-on { background: var(--pale-blue); border-color: var(--signal); }
+  .type input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .type:focus-within { outline: 2px solid var(--signal); outline-offset: -2px; }
+
+  /* -------------------------------------------------------------- fields */
+  .fields { display: grid; gap: 18px; margin-top: clamp(24px, 3vw, 34px); }
+  .fields--2 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+  .field { display: block; min-width: 0; margin-top: 18px; }
+  .fields .field { margin-top: 0; }
+  .field__l { display: block; font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid var(--input-border);
+    background: var(--paper);
+    font-size: 15.5px;
+    font-family: var(--font-body);
+  }
+  .field textarea { resize: vertical; }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: 2px solid var(--signal);
+    outline-offset: -2px;
+  }
+  .field input[aria-invalid='true'] { border-color: #C0392B; }
+  .field__err {
+    display: none;
+    margin-top: 7px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #C0392B;
+  }
+  .field__err.is-shown { display: block; }
+
+  /* -------------------------------------------------------- confirmation */
+  .done { padding: clamp(8px, 2vw, 24px) 0; }
+  .done__tick {
+    width: 66px;
+    height: 66px;
+    background: var(--signal);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 30px;
+    margin-bottom: 28px;
+  }
+  .done__h { color: var(--ink); }
+  .done__b { margin: 20px 0 30px; max-width: 46ch; }
+
+  /* --------------------------------------------------------------- aside */
+  .est__photo { background: var(--ink); }
+  .est__aside-h {
+    margin-top: clamp(30px, 3.4vw, 44px);
+    font-size: clamp(20px, 1.9vw, 26px);
+    line-height: 1;
+    color: var(--ink);
+  }
+  .next { margin-top: 22px; border-top: 1px solid var(--hairline); }
+  .next__item { padding: 18px 0; border-bottom: 1px solid var(--hairline); }
+  .next__t { font-size: 16px; font-weight: 600; color: var(--ink); }
+  .next__b { margin-top: 6px; font-size: 14.5px; }
+
+  .card { background: var(--ink); padding: clamp(24px, 2.8vw, 34px); margin-top: clamp(26px, 3vw, 38px); }
+  .card__phone {
+    display: block;
+    font-family: var(--font-display);
+    font-stretch: 115%;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: clamp(22px, 2.3vw, 30px);
+    color: #fff;
+    transition: color 260ms var(--ease);
+  }
+  .card__phone:hover { color: var(--beam); }
+  .card__meta { margin-top: 12px; font-size: 14px; font-weight: 500; color: var(--dim-grey); }
+</style>
+
+<script>
+  /* Three-step estimate form.
+     Without JS every step is visible and the form submits in one go, so the
+     lead is never lost. With JS it becomes the three-step flow from the design.
+
+     Production behaviour, per the handoff:
+     - honeypot field (`company_website`) — a filled one is dropped silently
+     - email and phone validated before the step advances
+     - partial answers kept in sessionStorage so a stray back-button does not
+       wipe the form
+     - a conversion event fires on a successful submit */
+
+  const form = document.querySelector('[data-estimate-form]') as HTMLFormElement | null;
+
+  if (form) {
+    const STORE_KEY = 'nsr-estimate';
+    const steps = Array.from(form.querySelectorAll('[data-step]')) as HTMLFieldSetElement[];
+    const segs = Array.from(form.querySelectorAll('[data-prog]')) as HTMLElement[];
+    const donePanel = document.querySelector('[data-done]') as HTMLElement | null;
+    let current = 1;
+
+    /* ---- step display ---- */
+    const show = (n: number, opts: { scroll?: boolean; persist?: boolean } = {}) => {
+      const { scroll = true, persist = true } = opts;
+      current = Math.min(steps.length, Math.max(1, n));
+      steps.forEach((s) => {
+        s.hidden = Number(s.dataset.step) !== current;
+      });
+      segs.forEach((seg) => {
+        seg.classList.toggle('is-on', Number(seg.dataset.prog) <= current);
+      });
+      if (scroll) form.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      if (persist) save();
+    };
+
+    /* ---- validation ---- */
+    const setError = (input: HTMLInputElement, message: string) => {
+      const err = input.parentElement?.querySelector('[data-err]') as HTMLElement | null;
+      if (message) {
+        input.setAttribute('aria-invalid', 'true');
+        if (err) { err.textContent = message; err.classList.add('is-shown'); }
+      } else {
+        input.removeAttribute('aria-invalid');
+        if (err) { err.textContent = ''; err.classList.remove('is-shown'); }
+      }
+    };
+
+    const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+    const phoneOk = (v: string) => (v.replace(/\D/g, '').length >= 10);
+
+    const validateStep = (n: number) => {
+      const step = steps.find((s) => Number(s.dataset.step) === n);
+      if (!step) return true;
+      let ok = true;
+      let firstBad: HTMLInputElement | null = null;
+
+      step.querySelectorAll('input[required]').forEach((node) => {
+        const input = node as HTMLInputElement;
+        if (input.type === 'radio') return;
+        let msg = '';
+        if (!input.value.trim()) msg = 'This one is required.';
+        else if (input.type === 'email' && !emailOk(input.value)) msg = 'Check the email address.';
+        else if (input.type === 'tel' && !phoneOk(input.value)) msg = 'Enter a phone number we can reach you on.';
+        setError(input, msg);
+        if (msg) { ok = false; firstBad = firstBad || input; }
+      });
+
+      firstBad?.focus();
+      return ok;
+    };
+
+    /* ---- persistence ---- */
+    const save = () => {
+      try {
+        const data: Record<string, string> = { __step: String(current) };
+        new FormData(form).forEach((v, k) => {
+          if (k !== 'company_website') data[k] = String(v);
+        });
+        sessionStorage.setItem(STORE_KEY, JSON.stringify(data));
+      } catch {}
+    };
+
+    const restore = () => {
+      try {
+        const raw = sessionStorage.getItem(STORE_KEY);
+        if (!raw) return false;
+        const data = JSON.parse(raw) as Record<string, string>;
+        Object.entries(data).forEach(([k, v]) => {
+          if (k === '__step') return;
+          const field = form.elements.namedItem(k);
+          if (!field) return;
+          if (field instanceof RadioNodeList) {
+            Array.from(field).forEach((r) => {
+              const radio = r as HTMLInputElement;
+              radio.checked = radio.value === v;
+            });
+          } else if (field instanceof HTMLInputElement
+                  || field instanceof HTMLSelectElement
+                  || field instanceof HTMLTextAreaElement) {
+            field.value = v;
+          }
+        });
+        syncChips();
+        show(Number(data.__step) || 1, { scroll: false });
+        return true;
+      } catch {}
+      return false;
+    };
+
+    /* ---- chip selection ---- */
+    const chips = Array.from(form.querySelectorAll('.type')) as HTMLLabelElement[];
+    const syncChips = () => {
+      chips.forEach((chip) => {
+        const radio = chip.querySelector('input') as HTMLInputElement;
+        chip.classList.toggle('is-on', radio.checked);
+      });
+    };
+    chips.forEach((chip) => {
+      chip.querySelector('input')?.addEventListener('change', () => { syncChips(); save(); });
+    });
+
+    /* ---- navigation ---- */
+    form.querySelectorAll('[data-next]').forEach((b) =>
+      b.addEventListener('click', () => { if (validateStep(current)) show(current + 1); })
+    );
+    form.querySelectorAll('[data-back]').forEach((b) =>
+      b.addEventListener('click', () => show(current - 1))
+    );
+    form.addEventListener('input', save);
+
+    /* ---- submit ---- */
+    form.addEventListener('submit', async (e) => {
+      if (!validateStep(3)) { e.preventDefault(); return; }
+
+      // Honeypot: a bot filled the hidden field. Pretend it worked.
+      const hp = form.elements.namedItem('company_website') as HTMLInputElement | null;
+      if (hp && hp.value) { e.preventDefault(); return; }
+
+      // No endpoint configured yet — let the native submit fail loudly rather
+      // than showing a confirmation for a lead that went nowhere.
+      if (!form.getAttribute('action')) return;
+
+      e.preventDefault();
+      const btn = form.querySelector('[type="submit"]') as HTMLButtonElement | null;
+      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (!res.ok) throw new Error(String(res.status));
+
+        // Conversion event for analytics / ads.
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({ event: 'estimate_submitted' });
+
+        try { sessionStorage.removeItem(STORE_KEY); } catch {}
+        form.hidden = true;
+        if (donePanel) {
+          donePanel.hidden = false;
+          donePanel.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+      } catch {
+        if (btn) { btn.disabled = false; btn.textContent = 'Send my request →'; }
+        alert('Something went wrong sending that. Please call us on ' + '1-877-455-1811' + ' and we will take the details over the phone.');
+      }
+    });
+
+    /* ---- boot ----
+       Restore first: show() persists, so calling it before restore() would
+       overwrite the saved answers with the empty form. */
+    syncChips();
+    if (!restore()) show(1, { scroll: false, persist: false });
+  }
+</script>

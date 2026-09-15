@@ -1,0 +1,354 @@
+/* ==========================================================================
+   Northern Soul Renovation — design tokens & base
+   Every value here comes from the brand handoff. Change a token here and it
+   updates everywhere on the site.
+   ========================================================================== */
+
+:root {
+  /* ---- Color ---------------------------------------------------------- */
+  --ink:            #0B0D10;   /* body text, dark grounds, footer */
+  --signal:         #1B4DE4;   /* CTAs, links, accents */
+  --beam:           #7FA0FF;   /* accent on dark grounds ONLY */
+  --concrete:       #F2F3F5;   /* alternating section backgrounds */
+  --paper:          #FFFFFF;
+
+  --body-grey:      #5A616C;   /* paragraphs on light */
+  --muted-grey:     #8A909B;   /* captions on light */
+  --light-grey:     #C9D1E0;   /* paragraphs on ink */
+  --dim-grey:       #8B93A3;   /* secondary text on ink */
+
+  --hairline:       #E3E5EA;   /* borders on white */
+  --hairline-conc:  #DCDEE3;   /* borders on concrete */
+  --hairline-conc-2:#C9CDD4;
+  --hairline-dark:  #1C1F26;   /* borders on ink */
+  --input-border:   #D6D9DF;
+  --pale-blue:      #E8EDFB;   /* selected chip fill */
+
+  --on-blue:        #DCE5FF;   /* paragraph on signal blue */
+  --on-blue-dim:    #C7D5FF;   /* caption on signal blue */
+
+  /* ---- Type ----------------------------------------------------------- */
+  --font-display: 'Archivo', system-ui, sans-serif;
+  --font-body:    'Instrument Sans', system-ui, -apple-system, sans-serif;
+
+  /* ---- Layout --------------------------------------------------------- */
+  --container: 1480px;
+  --gutter: clamp(16px, 4vw, 56px);
+  --section-y: clamp(64px, 8vw, 130px);
+  --section-y-sm: clamp(56px, 7vw, 110px);
+
+  /* ---- Motion --------------------------------------------------------- */
+  --ease: cubic-bezier(.16, 1, .3, 1);
+  --ease-zoom: cubic-bezier(.2, .7, .2, 1);
+}
+
+/* ---- Reset ------------------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 90px;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img, svg, video { max-width: 100%; display: block; }
+img { height: auto; }
+
+h1, h2, h3, h4, h5, h6, p, figure, blockquote { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+a { color: var(--signal); text-decoration: none; }
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+  border-radius: 0;   /* radius is 0 everywhere — core to the identity */
+}
+button { cursor: pointer; background: none; border: none; padding: 0; }
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+/* Skip link for keyboard users */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 10000;
+  background: var(--ink);
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.skip-link:focus { left: 0; }
+
+/* ==========================================================================
+   Typography helpers
+   ========================================================================== */
+
+/* Archivo is display-only: always uppercase, expanded, tight. */
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-stretch: 118%;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.94;
+  text-wrap: balance;
+}
+
+.h1-hero   { font-size: clamp(42px, 8.2vw, 124px); line-height: 0.90; letter-spacing: -0.025em; font-stretch: 120%; }
+.h1-page   { font-size: clamp(40px, 7vw, 104px);   line-height: 0.90; letter-spacing: -0.025em; font-stretch: 120%; }
+.h2-lg     { font-size: clamp(34px, 5.2vw, 76px);  line-height: 0.94; }
+.h2-md     { font-size: clamp(32px, 4.4vw, 62px);  line-height: 0.94; }
+.h2-sm     { font-size: clamp(30px, 3.8vw, 54px);  line-height: 0.96; }
+.h3-card   { font-size: clamp(22px, 2.1vw, 29px);  line-height: 1.05; font-stretch: 115%; }
+
+.lead {
+  font-size: clamp(16px, 1.35vw, 19px);
+  line-height: 1.65;
+  text-wrap: pretty;
+  color: var(--body-grey);
+}
+.lead--on-ink { color: var(--light-grey); }
+
+.body-text {
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: var(--body-grey);
+  text-wrap: pretty;
+}
+.body-text--on-ink { color: var(--light-grey); }
+
+.caption {
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--muted-grey);
+}
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+.section    { padding-top: var(--section-y);    padding-bottom: var(--section-y); }
+.section--sm{ padding-top: var(--section-y-sm); padding-bottom: var(--section-y-sm); }
+
+.bg-ink      { background: var(--ink);      color: var(--light-grey); }
+.bg-concrete { background: var(--concrete); }
+.bg-signal   { background: var(--signal);   color: var(--on-blue); }
+.bg-ink h1, .bg-ink h2, .bg-ink h3, .bg-ink h4 { color: #fff; }
+.bg-signal h1, .bg-signal h2, .bg-signal h3 { color: #fff; }
+
+/* Hairline grid: 1px gap over a hairline-coloured parent shows through as
+   grid lines. Keeps corners sharp with no double borders. */
+.hairgrid {
+  display: grid;
+  gap: 1px;
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+}
+.hairgrid > * { background: var(--paper); }
+
+.hairgrid--concrete { background: var(--hairline-conc-2); border-color: var(--hairline-conc-2); }
+.hairgrid--concrete > * { background: var(--concrete); }
+
+.hairgrid--ink { background: var(--hairline-dark); border-color: var(--hairline-dark); }
+.hairgrid--ink > * { background: var(--ink); }
+
+/* ==========================================================================
+   Buttons
+   Sentence case, no letter-spacing, zero radius.
+   ========================================================================== */
+
+.btn {
+  display: inline-block;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: 15px 24px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  transition: background 320ms var(--ease), color 320ms var(--ease),
+              border-color 320ms var(--ease);
+}
+
+/* Primary: signal blue, inverts to ink on hover */
+.btn--primary { background: var(--signal); color: #fff; }
+.btn--primary:hover { background: var(--ink); color: #fff; }
+
+/* On ink grounds: white button that inverts to blue */
+.btn--light { background: #fff; color: var(--ink); }
+.btn--light:hover { background: var(--signal); color: #fff; }
+
+/* Outline on ink */
+.btn--ghost-ink { background: transparent; color: #fff; border-color: #2A2E37; }
+.btn--ghost-ink:hover { border-color: var(--beam); color: var(--beam); }
+
+/* Outline on light */
+.btn--ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn--ghost:hover { background: var(--ink); color: #fff; }
+
+/* On the signal blue CTA band */
+.btn--on-blue { background: #fff; color: var(--signal); }
+.btn--on-blue:hover { background: var(--ink); color: #fff; }
+
+/* Inline text CTA with an arrow */
+.link-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--signal);
+  transition: gap 380ms var(--ease), color 320ms var(--ease);
+}
+.link-cta:hover { gap: 14px; color: var(--ink); }
+.bg-ink .link-cta { color: var(--beam); }
+.bg-ink .link-cta:hover { color: #fff; }
+
+/* ==========================================================================
+   Motion — every effect below is disabled under prefers-reduced-motion
+   ========================================================================== */
+
+/* Scroll reveal: rise */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 820ms var(--ease), transform 820ms var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-in { opacity: 1; transform: none; }
+
+/* Scroll reveal: wipe.
+   Deliberately a mask, not clip-path. An element's own clip-path also clips
+   the rectangle IntersectionObserver measures, so a clip-path wipe reports
+   zero intersection and can never trigger its own reveal. Masks are not part
+   of that calculation, so the observer still sees the real box. */
+.wipe {
+  -webkit-mask-image: linear-gradient(#000 0 0);
+  mask-image: linear-gradient(#000 0 0);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: top left;
+  mask-position: top left;
+  -webkit-mask-size: 100% 0%;
+  mask-size: 100% 0%;
+  transform: scale(1.04);
+  transition: -webkit-mask-size 1050ms var(--ease), mask-size 1050ms var(--ease),
+              transform 1050ms var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: mask-size, transform;
+}
+.wipe.is-in {
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  transform: scale(1);
+}
+
+/* Image hover zoom — wrap the img in .zoom */
+.zoom { overflow: hidden; }
+.zoom img, .zoom .zoom-target {
+  transition: transform 760ms var(--ease-zoom);
+  will-change: transform;
+}
+.zoom:hover img, .zoom:hover .zoom-target { transform: scale(1.05); }
+
+/* Card lift */
+.lift { transition: transform 620ms var(--ease), box-shadow 620ms var(--ease); }
+.lift:hover { transform: translateY(-6px); box-shadow: 0 24px 60px -30px rgba(11, 13, 16, .55); }
+
+/* Magnetic buttons get their transform from motion.js */
+[data-magnetic] { transition: transform 620ms var(--ease); }
+[data-magnetic].is-pulling { transition: transform 120ms linear; }
+
+/* Hero entrance — staggered rise at 80/200/380/520/660ms */
+.hero-rise {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: nsr-rise 900ms var(--ease) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+@keyframes nsr-rise { to { opacity: 1; transform: none; } }
+
+/* Hero ken-burns */
+.ken { animation: nsr-ken 2600ms var(--ease) both; will-change: transform; }
+@keyframes nsr-ken { from { transform: scale(1.14); } to { transform: scale(1); } }
+
+/* Marquee */
+@keyframes nsr-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* Handle pulse on the before/after slider */
+@keyframes nsr-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50%      { transform: translate(-50%, -50%) scale(1.09); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  .wipe { -webkit-mask-image: none; mask-image: none; transform: none; }
+}
+
+/* ==========================================================================
+   Scroll progress bar
+   ========================================================================== */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: var(--signal);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Small shared pieces
+   ========================================================================== */
+
+/* Star row */
+.stars { display: inline-flex; gap: 3px; color: var(--beam); font-size: 14px; letter-spacing: 1px; }
+.stars--light { color: var(--signal); }
+
+/* Ratio boxes */
+.ratio-4-3  { aspect-ratio: 4 / 3;  }
+.ratio-4-5  { aspect-ratio: 4 / 5;  }
+.ratio-3-4  { aspect-ratio: 3 / 4;  }
+.ratio-16-9 { aspect-ratio: 16 / 9; }
+.ratio-21-9 { aspect-ratio: 21 / 9; }
+.cover { width: 100%; height: 100%; object-fit: cover; }
+
+/* Safety: some utility classes set display, which would defeat [hidden]. */
+[hidden] { display: none !important; }
