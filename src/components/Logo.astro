@@ -38,6 +38,7 @@ const Tag = href ? 'a' : 'div';
     letter-spacing: 0.1em;
     line-height: 1.1;
     text-transform: uppercase;
+    white-space: nowrap;
   }
   /* The one intentional letter-spaced micro-label on the site. It is a
      logotype detail, not a label style — do not reuse it elsewhere. */
@@ -49,5 +50,19 @@ const Tag = href ? 'a' : 'div';
     letter-spacing: 0.42em;
     text-transform: uppercase;
     margin-top: 4px;
+  }
+
+  /* On a phone the lockup shares its row with the estimate button, so it
+     gives up a little width. The 0.42em tracking on "Renovation" is a
+     logotype detail and is kept. */
+  @media (max-width: 880px) {
+    .logo { gap: 7px; }
+    .logo__name { font-size: 13.5px; letter-spacing: 0.08em; }
+    .logo__sub  { font-size: 8.5px; letter-spacing: 0.34em; margin-top: 3px; }
+  }
+  @media (max-width: 400px) {
+    .logo { gap: 6px; }
+    .logo__name { font-size: 12px; letter-spacing: 0.05em; }
+    .logo__sub  { font-size: 7.5px; letter-spacing: 0.28em; }
   }
 </style>

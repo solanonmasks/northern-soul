@@ -20,8 +20,14 @@ const { active = '' } = Astro.props;
   </div>
 
   <div class="hdr__main">
+    <!-- Four grid children, not three nested groups. On wide screens they sit
+         in one row (logo · nav · phone · CTA); below 880px they re-flow into
+         two short rows without any change to the markup. -->
     <div class="hdr__inner">
-      <Logo href="/" />
+      <!-- Wrapped rather than given the class directly: Astro scopes styles
+           per component, so a class from here would not match an element
+           rendered inside Logo. -->
+      <div class="hdr__logo"><Logo href="/" /></div>
 
       <nav class="hdr__nav" aria-label="Main">
         {nav.map((item) => (
@@ -36,10 +42,8 @@ const { active = '' } = Astro.props;
         ))}
       </nav>
 
-      <div class="hdr__actions">
-        <a href={site.phoneHref} class="hdr__phone">{site.phone}</a>
-        <a href="/estimate/" class="btn btn--primary hdr__cta" data-magnetic>Free estimate →</a>
-      </div>
+      <a href={site.phoneHref} class="hdr__phone">{site.phone}</a>
+      <a href="/estimate/" class="btn btn--primary hdr__cta" data-magnetic>Free estimate →</a>
     </div>
   </div>
 </header>
@@ -89,19 +93,24 @@ const { active = '' } = Astro.props;
     max-width: var(--container);
     margin: 0 auto;
     padding: 0 var(--gutter);
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-areas: "logo nav phone cta";
     align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
+    column-gap: 16px;
     min-height: 74px;
   }
+  .hdr__logo  { grid-area: logo; min-width: 0; }
+  .hdr__nav   { grid-area: nav; justify-self: center; }
+  .hdr__phone { grid-area: phone; }
+  .hdr__cta   { grid-area: cta; }
 
   .hdr__nav {
     display: flex;
     align-items: center;
-    gap: clamp(14px, 1.9vw, 30px);
     flex-wrap: wrap;
+    min-width: 0;
+    gap: clamp(14px, 1.9vw, 30px);
     font-size: 14.5px;
     font-weight: 500;
   }
@@ -121,13 +130,6 @@ const { active = '' } = Astro.props;
     background: var(--signal);
   }
 
-  .hdr__actions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: nowrap;
-    padding: 12px 0;
-  }
   .hdr__phone {
     color: var(--ink);
     font-size: 15.5px;
@@ -136,13 +138,66 @@ const { active = '' } = Astro.props;
     transition: color 260ms var(--ease);
   }
   .hdr__phone:hover { color: var(--signal); }
-  .hdr__cta { padding: 14px 22px; }
+  .hdr__cta { padding: 14px 22px; white-space: nowrap; }
 
-  /* Below ~620px the phone number and the CTA stop fitting side by side. */
-  @media (max-width: 620px) {
-    .hdr__inner { justify-content: center; }
-    .hdr__phone { font-size: 15px; }
-    .hdr__link { padding: 14px 0; }
-    .hdr__underline { bottom: 11px; }
+  /* ---------------------------------------------------------------------
+     Below 880px all four items stop fitting on one line. Rather than let
+     them wrap into three stacked rows — which made the sticky header a
+     third of a phone screen — they re-flow into two short rows:
+
+        logo                    [ Free estimate ]
+        Services Projects About        1-877-…
+
+     Both lead paths stay visible at every scroll position, which is the
+     point of the header on this site.
+     --------------------------------------------------------------------- */
+  @media (max-width: 880px) {
+    .hdr__inner {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "logo  cta"
+        "nav   phone";
+      min-height: 0;
+      column-gap: 0;
+      padding-top: 11px;
+    }
+    /* Both cells stretch and the column gap is zero, so their top borders
+       meet and read as one rule across the header rather than two stubs.
+       Row-one spacing is restored by a margin on the button instead. */
+    .hdr__nav   { justify-self: stretch; min-width: 0; }
+    .hdr__phone { justify-self: stretch; min-width: 0; }
+    .hdr__cta   { margin-left: 12px; }
+
+    /* align-self: stretch matters — the grid centres items by default, and
+       the nav cell is taller than the phone cell, so their top borders would
+       sit at different heights and the rule would look broken. */
+    .hdr__nav, .hdr__phone {
+      border-top: 1px solid var(--hairline);
+      margin-top: 11px;
+      align-self: stretch;
+    }
+    .hdr__nav { gap: 20px; flex-wrap: nowrap; }
+    .hdr__link { padding: 11px 0; font-size: 14px; }
+    .hdr__underline { bottom: 8px; }
+    .hdr__phone {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: 14.5px;
+    }
+    .hdr__cta { padding: 12px 16px; font-size: 14px; }
+
+    /* One line of utility copy is enough on a phone. */
+    .hdr__util-right { display: none; }
+    .hdr__util-inner { padding: 7px var(--gutter); font-size: 13px; }
+  }
+
+  /* Smallest phones. Sized so the two rows still fit when the Instrument Sans
+     webfont has not loaded and a wider system fallback is standing in. */
+  @media (max-width: 400px) {
+    .hdr__nav   { gap: 12px; }
+    .hdr__link  { font-size: 13px; }
+    .hdr__phone { font-size: 13px; }
+    .hdr__cta   { padding: 11px 10px; font-size: 13px; }
   }
 </style>
