@@ -32,7 +32,7 @@ export const homeServices = [
   },
   {
     href: '/services/#commercial',
-    img: '/images/gym.png',
+    img: '/images/gym.jpg',
     alt: 'Commercial fit-out',
     title: 'Commercial build-outs',
     body: 'Health, wellness, retail and food service. Tenant improvements phased around your hours so the doors stay open and staff keep working.',
@@ -47,7 +47,7 @@ export const homeServices = [
 ];
 
 export const selectedWork = [
-  { href: '/projects/#alive',    img: '/images/gym.png',           alt: 'Alive Fitness and Wellness fit-out', title: 'Alive Fitness & Wellness', meta: 'Commercial' },
+  { href: '/projects/#alive',    img: '/images/gym.jpg',           alt: 'Alive Fitness and Wellness fit-out', title: 'Alive Fitness & Wellness', meta: 'Commercial' },
   { href: '/projects/#downtown', img: '/images/bedroom-suite.jpg', alt: 'Downtown Vancouver suite',           title: 'Downtown suite',           meta: 'Vancouver' },
   { href: '/projects/#pang',     img: '/images/kitchen-island.jpg',alt: 'Surrey residence remodel',           title: 'Pang residence',           meta: 'Surrey' },
   { href: '/projects/#portcoq',  img: '/images/vanity-mirror.jpg', alt: 'Vanity and ensuite, Port Coquitlam', title: 'Vanity & ensuite',         meta: 'Port Coquitlam' },
@@ -196,7 +196,7 @@ export const services = [
     body: 'Tenant improvements for small and mid-size businesses in health, wellness, retail and food service. As general contractors we align the build to how the space has to earn — integrating function with modern design, and phasing the disruptive work so your doors stay open.',
     includes: ['Studios & clinics', 'Retail fit-outs', 'Cafés & food service', 'Reception & millwork', 'Phased scheduling', 'Permit coordination'],
     cta: 'Discuss a build-out →',
-    img: '/images/gym.png',
+    img: '/images/gym.jpg',
     alt: 'Commercial fitness studio fit-out',
     ground: 'concrete',
     flip: false,
@@ -231,7 +231,7 @@ export const featuredProject = {
   id: 'alive',
   title: 'Alive Fitness & Wellness',
   body: 'A full studio fit-out for a wellness operator — training floor, treatment rooms, reception millwork and change facilities, phased so the business could keep running through the build.',
-  img: '/images/gym.png',
+  img: '/images/gym.jpg',
   alt: 'Alive Fitness and Wellness studio',
   specs: [
     ['Type', 'Commercial fit-out'],
