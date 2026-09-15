@@ -1,0 +1,148 @@
+---
+import Logo from './Logo.astro';
+import { site, nav } from '../data/site.js';
+
+interface Props {
+  active?: string;
+}
+const { active = '' } = Astro.props;
+---
+<header class="hdr" data-header>
+  <!-- Utility bar: collapses to zero height past 60px of scroll -->
+  <div class="hdr__util">
+    <div class="hdr__util-inner">
+      <span class="hdr__util-area">{site.serviceArea}</span>
+      <span class="hdr__util-right">
+        <span>Free written scope in 48 hrs</span>
+        <span class="hdr__util-dim">Family-run since {site.founded}</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="hdr__main">
+    <div class="hdr__inner">
+      <Logo href="/" />
+
+      <nav class="hdr__nav" aria-label="Main">
+        {nav.map((item) => (
+          <a
+            href={item.href}
+            class="hdr__link"
+            aria-current={active === item.key ? 'page' : undefined}
+          >
+            {item.label}
+            {active === item.key && <span class="hdr__underline"></span>}
+          </a>
+        ))}
+      </nav>
+
+      <div class="hdr__actions">
+        <a href={site.phoneHref} class="hdr__phone">{site.phone}</a>
+        <a href="/estimate/" class="btn btn--primary hdr__cta" data-magnetic>Free estimate →</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .hdr {
+    position: sticky;
+    top: 0;
+    z-index: 80;
+    font-family: var(--font-body);
+  }
+
+  .hdr__util {
+    background: var(--ink);
+    color: #9AA3B2;
+    overflow: hidden;
+    max-height: 60px;
+    opacity: 1;
+    transition: max-height 480ms var(--ease), opacity 300ms ease;
+  }
+  .hdr.is-scrolled .hdr__util { max-height: 0; opacity: 0; }
+
+  .hdr__util-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px 24px;
+    padding: 10px var(--gutter);
+    font-size: 13.5px;
+    line-height: 1.6;
+    font-weight: 500;
+    letter-spacing: 0.004em;
+  }
+  .hdr__util-area { color: var(--light-grey); }
+  .hdr__util-right { display: flex; gap: 22px; flex-wrap: wrap; }
+  .hdr__util-dim { color: #6E7A8C; }
+
+  .hdr__main {
+    background: var(--paper);
+    border-bottom: 1px solid var(--hairline);
+    transition: box-shadow 400ms ease;
+  }
+  .hdr.is-scrolled .hdr__main { box-shadow: 0 12px 40px -28px rgba(11, 13, 16, .5); }
+
+  .hdr__inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    min-height: 74px;
+  }
+
+  .hdr__nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(14px, 1.9vw, 30px);
+    flex-wrap: wrap;
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+  .hdr__link {
+    position: relative;
+    display: block;
+    color: var(--ink);
+    padding: 25px 0;
+    transition: color 260ms var(--ease);
+  }
+  .hdr__link:hover { color: var(--signal); }
+  .hdr__underline {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 22px;
+    height: 2px;
+    background: var(--signal);
+  }
+
+  .hdr__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: nowrap;
+    padding: 12px 0;
+  }
+  .hdr__phone {
+    color: var(--ink);
+    font-size: 15.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: color 260ms var(--ease);
+  }
+  .hdr__phone:hover { color: var(--signal); }
+  .hdr__cta { padding: 14px 22px; }
+
+  /* Below ~620px the phone number and the CTA stop fitting side by side. */
+  @media (max-width: 620px) {
+    .hdr__inner { justify-content: center; }
+    .hdr__phone { font-size: 15px; }
+    .hdr__link { padding: 14px 0; }
+    .hdr__underline { bottom: 11px; }
+  }
+</style>

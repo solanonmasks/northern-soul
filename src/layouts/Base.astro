@@ -1,0 +1,102 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site, serviceAreas } from '../data/site.js';
+
+interface Props {
+  title: string;
+  description: string;
+  active?: string;
+  /** Path to the OG image, relative to the site root. */
+  ogImage?: string;
+}
+const { title, description, active = '', ogImage = '/images/og-default.jpg' } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogUrl = new URL(ogImage, site.url).href;
+
+const localBusiness = {
+  '@context': 'https://schema.org',
+  '@type': 'GeneralContractor',
+  '@id': `${site.url}/#business`,
+  name: site.name,
+  legalName: site.legalName,
+  url: site.url,
+  telephone: site.phone,
+  email: site.email,
+  foundingDate: site.founded,
+  image: ogUrl,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: site.city,
+    addressRegion: site.region,
+    addressCountry: site.country,
+  },
+  areaServed: serviceAreas.map((a) => ({
+    '@type': 'City',
+    name: a,
+    address: { '@type': 'PostalAddress', addressRegion: 'BC', addressCountry: 'CA' },
+  })),
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '17:00',
+    },
+  ],
+  sameAs: [site.instagram, site.facebook],
+  makesOffer: [
+    'Kitchen remodels',
+    'Bathroom remodels',
+    'Microcement walls and floors',
+    'Residential renovations',
+    'Commercial build-outs',
+    'Design and planning',
+  ].map((s) => ({
+    '@type': 'Offer',
+    itemOffered: { '@type': 'Service', name: s, provider: { '@id': `${site.url}/#business` } },
+  })),
+};
+---
+<!doctype html>
+<html lang="en-CA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="theme-color" content="#0B0D10" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Sans:wght@400;500;600;700&display=swap"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(localBusiness)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
+    <Header active={active} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script is:inline src="/js/motion.js" defer></script>
+  </body>
+</html>

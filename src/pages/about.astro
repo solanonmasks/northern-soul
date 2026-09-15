@@ -1,0 +1,221 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+const people = [
+  {
+    name: 'Norbert Csoti',
+    role: 'Founder, and the builder on your site',
+    body: 'Runs every job personally. He does the walkthrough, writes the scope and is the person you call when you want to know who is on site tomorrow. Twenty years on the tools before the company had a name.',
+    img: '/images/norbert.jpg',
+    alt: 'Norbert Csoti, founder and builder',
+  },
+  {
+    name: 'Michelle Amaba',
+    role: 'Project & Design Director',
+    body: 'Owns the design, the finish schedule and the calendar. She turns a vague idea about a room into drawings, selections and a plan the trades can actually build from — then holds everyone to it.',
+    img: '/images/michelle.png',
+    alt: 'Michelle Amaba, Project and Design Director',
+  },
+];
+
+const disciplines = [
+  ['Carpentry & millwork', 'In house'],
+  ['Microcement application', 'In house'],
+  ['Electrical, plumbing & HVAC', 'Long-standing partners'],
+  ['Stone, glass & tile', 'Long-standing partners'],
+  ['Permits & inspections', 'Handled by us'],
+];
+
+const values = [
+  { t: 'Soul',   b: 'A renovation is disruptive, expensive and personal. We treat it that way — kindness and straight answers, even when the answer is not what you hoped.' },
+  { t: 'Beauty', b: 'Proportion, light and material, settled on paper before anyone swings a hammer. Design is not a finishing touch, it is the first decision.' },
+  { t: 'Craft',  b: 'The parts you never see decide how long the parts you do see last. Waterproofing, framing, blocking, substrate — done properly or done again.' },
+];
+---
+<Base
+  title="About Northern Soul Renovation | Family-Run Contractor, Surrey BC"
+  description="A family-run design–build contractor in Surrey, BC since 2019. Meet Norbert and Michelle, and the crew behind every kitchen, bathroom and commercial renovation we deliver."
+  active="about"
+>
+  <PageHero
+    title="A family business with its name on the wall."
+    lead="Since 2019 we have specialised in kitchen, bathroom, residential and commercial remodels — delivering tailored results through exceptional craftsmanship and personal service. Named for founder Norbert, whose name means Northern Lights."
+  />
+
+  <!-- Full-bleed band photo -->
+  <div class="band" role="img" aria-label="Northern Soul Renovation crew on a Lower Mainland job site"></div>
+
+  <!-- Mission -->
+  <section class="section">
+    <div class="container mission">
+      <h2 class="display h2-sm reveal">Soul, beauty and craft — in that order.</h2>
+      <div class="mission__body">
+        <p class="lead">
+          Our mission is to elevate spaces and make a meaningful difference in people's
+          lives by bringing their vision to life through a personal experience.
+        </p>
+        <p class="body-text mission__p">
+          Rooted in family values, we bring heart to every project and build relationships
+          through kindness, transparency and trust. We are dedicated to solving the hard
+          parts of a build rather than papering over them, and to keep evolving — new
+          materials, new methods, better ways to run a site.
+        </p>
+        <p class="body-text mission__p">
+          Inspired by the Northern Lights, we look for that shift in a space — the moment a
+          room stops being a problem and starts being the reason you come home.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- People -->
+  <section class="section bg-concrete">
+    <div class="container">
+      <h2 class="display h2-md people__h reveal">The people on your job.</h2>
+
+      <div class="people">
+        {people.map((p, i) => (
+          <div class="person reveal" style={`--reveal-delay:${i * 90}ms`}>
+            <div class="person__media zoom ratio-4-5">
+              <img src={p.img} alt={p.alt} class="cover" loading="lazy" decoding="async" width="1200" height="1500" />
+            </div>
+            <h3 class="display person__name">{p.name}</h3>
+            <div class="person__role">{p.role}</div>
+            <p class="body-text person__body">{p.body}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="crew">
+        <div class="crew__text">
+          <h3 class="display h2-sm reveal">And the same crew behind them.</h3>
+          <p class="lead crew__lead">
+            No rotating cast of subcontractors. We work with the same trade partners job
+            after job, which is the only reason a schedule ever holds. Every one of them is
+            licensed, insured and answers to us — not to you.
+          </p>
+        </div>
+        <dl class="crew__table reveal" style="--reveal-delay:80ms">
+          {disciplines.map(([k, v]) => (
+            <div class="crew__row">
+              <dt class="crew__k">{k}</dt>
+              <dd class="crew__v">{v}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="section bg-ink">
+    <div class="container">
+      <div class="values">
+        {values.map((v, i) => (
+          <div class="value reveal" style={`--reveal-delay:${i * 90}ms`}>
+            <h3 class="display value__t">{v.t}</h3>
+            <p class="body-text body-text--on-ink value__b">{v.b}</p>
+          </div>
+        ))}
+      </div>
+
+      <figure class="pull">
+        <blockquote class="display pull__q reveal">
+          Great things come from construction zones, not comfort zones.
+        </blockquote>
+        <figcaption class="pull__cap">The line we keep coming back to. Design. Build. Evolve.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <CtaBand
+    heading="Come meet us on your own floor."
+    body="The walkthrough is free, takes about an hour, and you get a written scope within 48 hours. Nothing to sign, no pressure."
+    cta="Book the walkthrough →"
+  />
+</Base>
+
+<style>
+  .band {
+    height: clamp(240px, 38vw, 520px);
+    background-image: url('/images/crew-site.jpg');
+    background-size: cover;
+    background-position: center 40%;
+    background-color: #15181E;
+  }
+
+  .mission {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: clamp(28px, 4vw, 80px);
+    align-items: start;
+  }
+  .mission__p { margin-top: 20px; max-width: 62ch; }
+
+  .people__h { margin-bottom: clamp(32px, 4vw, 56px); }
+  .people {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    gap: clamp(28px, 3.5vw, 56px);
+  }
+  .person__media { background: var(--ink); }
+  .person__name {
+    margin-top: clamp(20px, 2.2vw, 28px);
+    font-size: clamp(24px, 2.6vw, 36px);
+    line-height: 1;
+    color: var(--ink);
+  }
+  .person__role { margin-top: 10px; font-size: 17px; font-weight: 500; color: var(--signal); }
+  .person__body { margin-top: 16px; max-width: 48ch; }
+
+  .crew {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: clamp(28px, 4vw, 72px);
+    align-items: start;
+    margin-top: clamp(48px, 6vw, 88px);
+    padding-top: clamp(40px, 5vw, 72px);
+    border-top: 1px solid var(--hairline-conc-2);
+  }
+  .crew__lead { margin-top: 20px; max-width: 46ch; }
+  .crew__table { border-top: 1px solid var(--hairline-conc-2); }
+  .crew__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--hairline-conc-2);
+  }
+  .crew__k { font-size: 15.5px; font-weight: 600; color: var(--ink); margin: 0; }
+  .crew__v { font-size: 14px; font-weight: 500; color: var(--muted-grey); margin: 0; white-space: nowrap; }
+
+  .values {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(28px, 3.5vw, 56px);
+  }
+  .value__t { font-size: clamp(26px, 2.8vw, 40px); line-height: 1; color: #fff; }
+  .value__b { margin-top: 16px; max-width: 42ch; }
+
+  .pull {
+    margin-top: clamp(56px, 7vw, 104px);
+    padding-top: clamp(40px, 5vw, 72px);
+    border-top: 1px solid var(--hairline-dark);
+  }
+  .pull__q {
+    margin: 0;
+    font-family: var(--font-display);
+    font-stretch: 118%;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: clamp(26px, 4.2vw, 60px);
+    line-height: 0.96;
+    letter-spacing: -0.022em;
+    color: #fff;
+    max-width: 20ch;
+  }
+  .pull__cap { margin-top: 24px; font-size: 14px; font-weight: 500; color: var(--dim-grey); }
+</style>

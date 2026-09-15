@@ -1,0 +1,50 @@
+---
+import { marqueeItems } from '../data/content.js';
+/* The group is duplicated and the track translated -50% for a seamless loop.
+   Decorative, so the whole band is hidden from assistive tech. */
+---
+<section class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    {[0, 1].map(() => (
+      <span class="marquee__group">
+        {marqueeItems.map((item) => (
+          <>
+            <span class="marquee__item">{item}</span>
+            <span class="marquee__dot">◆</span>
+          </>
+        ))}
+      </span>
+    ))}
+  </div>
+</section>
+
+<style>
+  .marquee {
+    background: var(--signal);
+    padding: 15px 0;
+    overflow: hidden;
+  }
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    animation: nsr-marquee 42s linear infinite;
+    will-change: transform;
+  }
+  .marquee__group { display: flex; align-items: center; }
+  .marquee__item {
+    font-family: var(--font-display);
+    font-stretch: 115%;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    color: #fff;
+    padding: 0 22px;
+    white-space: nowrap;
+  }
+  .marquee__dot { color: var(--on-blue-dim); font-size: 9px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track { animation: none; }
+  }
+</style>

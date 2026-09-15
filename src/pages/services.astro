@@ -1,0 +1,111 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { services } from '../data/content.js';
+
+const groundClass = { paper: '', concrete: 'bg-concrete', ink: 'bg-ink' };
+---
+<Base
+  title="Renovation Services in Vancouver & Surrey | Northern Soul Renovation"
+  description="Kitchen and bathroom remodels, microcement walls and floors, whole-home renovations, commercial build-outs and design & planning across Greater Vancouver and the Fraser Valley."
+  active="services"
+>
+  <PageHero
+    title="Everything between the drawing and the final coat."
+    lead="We are general contractors and designers in one shop. That means one scope, one schedule, one invoice — and no gaps between trades for problems to hide in."
+  >
+    <nav class="chips" aria-label="Services">
+      {services.map((s) => (
+        <a href={`#${s.id}`} class="chip">{s.chip}</a>
+      ))}
+    </nav>
+  </PageHero>
+
+  {services.map((s) => (
+    <section id={s.id} class:list={['section', groundClass[s.ground]]}>
+      <div class="container">
+        <div class:list={['svc-row', s.flip && 'svc-row--flip']}>
+          <div class="svc-row__text">
+            <div class="svc-row__eyebrow reveal">{s.eyebrow}</div>
+            <h2 class="display h2-sm reveal" style="--reveal-delay:70ms">{s.title}</h2>
+            <p class:list={['lead', 'svc-row__body', s.ground === 'ink' && 'lead--on-ink']}>{s.body}</p>
+
+            <div
+              class:list={[
+                'hairgrid', 'svc-row__inc', 'reveal',
+                s.ground === 'concrete' && 'hairgrid--concrete',
+                s.ground === 'ink' && 'hairgrid--ink',
+              ]}
+              style="--reveal-delay:140ms"
+            >
+              {s.includes.map((inc) => <span class="svc-row__inc-cell">{inc}</span>)}
+            </div>
+
+            <a href="/estimate/" class="link-cta svc-row__cta">{s.cta}</a>
+          </div>
+
+          <div class="svc-row__media wipe zoom ratio-4-5">
+            <img src={s.img} alt={s.alt} class="cover" loading="lazy" decoding="async" width="1200" height="1500" />
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <CtaBand
+    heading="Not sure which one you need?"
+    body="Most projects cross two or three of these. Tell us what is bothering you about the space and we will tell you what it actually takes to fix it."
+    cta="Book a free walkthrough →"
+  />
+</Base>
+
+<style>
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(28px, 3.4vw, 44px); }
+  .chip {
+    border: 1px solid #2A2E37;
+    color: var(--light-grey);
+    padding: 11px 18px;
+    font-size: 14.5px;
+    font-weight: 500;
+    transition: border-color 300ms var(--ease), color 300ms var(--ease), background 300ms var(--ease);
+  }
+  .chip:hover { border-color: var(--signal); background: var(--signal); color: #fff; }
+
+  .svc-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: clamp(32px, 5vw, 88px);
+    align-items: center;
+  }
+  .svc-row--flip .svc-row__text { order: 2; }
+  .svc-row--flip .svc-row__media { order: 1; }
+  /* Below two columns the image should always lead. */
+  @media (max-width: 760px) {
+    .svc-row--flip .svc-row__text { order: 2; }
+    .svc-row--flip .svc-row__media { order: 1; }
+  }
+
+  .svc-row__eyebrow {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--signal);
+    margin-bottom: 18px;
+  }
+  .bg-ink .svc-row__eyebrow { color: var(--beam); }
+
+  .svc-row__body { margin-top: 20px; max-width: 54ch; }
+  .svc-row__inc {
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    margin-top: clamp(28px, 3.2vw, 40px);
+  }
+  .svc-row__inc-cell {
+    padding: 16px 18px;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .hairgrid--ink .svc-row__inc-cell { color: var(--light-grey); }
+  .svc-row__cta { margin-top: clamp(26px, 3vw, 36px); }
+  .svc-row__media { background: var(--ink); }
+</style>

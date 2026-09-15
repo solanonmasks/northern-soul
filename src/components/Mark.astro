@@ -1,0 +1,47 @@
+---
+/* The three-beam aurora mark.
+   Three parallelograms, each 22% of the mark width, at left 0 / 39% / 78%,
+   full height, skewed -16deg. Colours left→right: ink (white when reversed),
+   Signal Blue, Beam Blue.
+   Norbert's name means "northern lights" — that is what the mark is.
+
+   Geometry: a 26x30 bar box skewed about its vertical centre. tan(16deg) * 15
+   = 4.3, so the top edge shifts +4.3 and the bottom edge -4.3. The viewBox is
+   widened to -4.3..30.3 so the skew is never clipped. */
+interface Props {
+  height?: number;
+  variant?: 'default' | 'reversed';
+  class?: string;
+}
+const { height = 30, variant = 'default', class: className = '' } = Astro.props;
+
+const BOX = 26;
+const H = 30;
+const SKEW = 4.3;
+const w = BOX * 0.22;                       // 5.72
+const lefts = [0, BOX * 0.39, BOX * 0.78];  // 0, 10.14, 20.28
+
+const beam = (L: number) =>
+  [
+    `${(L + SKEW).toFixed(2)},0`,
+    `${(L + w + SKEW).toFixed(2)},0`,
+    `${(L + w - SKEW).toFixed(2)},${H}`,
+    `${(L - SKEW).toFixed(2)},${H}`,
+  ].join(' ');
+
+const colors = [variant === 'reversed' ? '#FFFFFF' : '#0B0D10', '#1B4DE4', '#7FA0FF'];
+const vbW = BOX + SKEW * 2;                 // 34.6
+const width = +((height * vbW) / H).toFixed(2);
+---
+<svg
+  class={className}
+  width={width}
+  height={height}
+  viewBox={`${-SKEW} 0 ${vbW} ${H}`}
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+  style="flex-shrink:0;display:block"
+>
+  {lefts.map((L, i) => <polygon points={beam(L)} fill={colors[i]} />)}
+</svg>
