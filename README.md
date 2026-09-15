@@ -79,44 +79,49 @@ for spam, email and phone validation, partial answers saved to
 `sessionStorage`, and a `estimate_submitted` conversion event pushed to
 `window.dataLayer` on success.
 
-### 2. Replace the placeholder photos  ⚠️ blocks launch
+### 2. Two photos still outstanding
 
-Ten images currently show a dark **"PHOTO PENDING"** card. They are
-placeholders at the correct dimensions, standing in for photos that still
-live on the client's Squarespace CDN — that CDN will stop working when the
-subscription lapses, so nothing on this site links to it.
+Eight of the ten photo slots are filled with the client's own photography.
+**Two still show a dark "PHOTO PENDING" card:**
 
-To pull them in (from a machine with normal internet access):
+| Filename | What it needs to be | Used on |
+|---|---|---|
+| `hero-interior.jpg` | Wide, moodier interior. It sits under a dark gradient with white text over it, so a bright shot will fight the headline. | Home hero (full-bleed) |
+| `crew-site.jpg` | Crew at work on site. | Home "A family name on every job site", About band |
+
+Both still exist on the client's old Squarespace CDN — which will stop working
+when that subscription lapses. To pull them in, from a machine with normal
+internet access:
 
 ```bash
 bash scripts/fetch-photos.sh
 npm run build
 ```
 
-When real project photography arrives, drop the new files over the ones in
-`public/images/` **using the same filenames** and rebuild. No code changes.
+Or drop your own files in with those exact names. **Replacing any photo is
+just dropping a file into `public/images/` with the matching filename** — the
+code references filenames, so nothing else changes.
 
-| Filename | What it should be | Used on |
-|---|---|---|
-| `hero-interior.jpg` | Dim interior | Home hero |
-| `kitchen-island.jpg` | Kitchen, island + fridge | Home, Services, Projects |
-| `bathroom-shower.jpg` | Bathroom, shower fixture | Services, Projects |
-| `vanity-mirror.jpg` | Lit-mirror vanity | Home, Projects, Estimate |
-| `kitchen-shaker.jpg` | Kitchen, shaker cabinets | Before/after "after" layer |
-| `bedroom-suite.jpg` | Bedroom | Home, Services, Projects |
-| `gym.png` | Fitness studio | Services, Projects featured |
-| `design-planning.jpg` | Design & planning | Home, Services |
-| `crew-site.jpg` | Crew on site | Home, About band |
-| `norbert.jpg` | Norbert portrait | About |
+Photos already in place: `kitchen-island.jpg`, `kitchen-shaker.jpg`,
+`bathroom-shower.jpg`, `vanity-mirror.jpg`, `bedroom-suite.jpg`, `gym.jpg`,
+`design-planning.jpg`, `norbert.jpg`, plus `kitchen-before.jpg`,
+`microcement-wetroom.jpg`, `microcement-wall-floor.jpg` and `michelle.png`
+from the handoff bundle.
 
-Already real, from the handoff bundle: `kitchen-before.jpg`,
-`microcement-wetroom.jpg`, `microcement-wall-floor.jpg`, `michelle.png`.
+### 3. The before/after slider is not a matched pair
 
-`kitchen-before.jpg` is the "before" layer of the homepage slider. Ideally
-reshoot it from the same position as the finished kitchen so the two line up
-under the handle.
+`kitchen-before.jpg` and `kitchen-shaker.jpg` — the two layers of the homepage
+slider — are not the same kitchen. Both are shot across an island from a
+similar angle, so the composite reads convincingly as a dated kitchen becoming
+a finished one, but the rooms differ (the window sits on opposite sides) and
+anyone looking closely will notice.
 
-### 3. Still needed from the client
+The handoff flagged this as a thing to fix: the before shot should ideally be
+taken from the same position as the finished kitchen. A genuine before/after
+pair from a past job would make the strongest single piece of proof on the
+site. Worth doing when a suitable job comes up; not worth blocking launch.
+
+### 4. Still needed from the client
 
 - **Real Google reviews** — the three homepage testimonials in
   `src/data/content.js` are marked `PLACEHOLDER` and must be replaced.
@@ -126,7 +131,7 @@ under the handle.
   The current mark is drawn as inline SVG in `src/components/Mark.astro`,
   which is fine for the web but is not a print-ready asset.
 
-### 4. Check the redirect map
+### 5. Check the redirect map
 
 `astro.config.mjs` redirects the old Squarespace URLs. Only `/services-4` is
 confirmed from the handoff; the rest are the conventional Squarespace slugs.
@@ -136,7 +141,7 @@ Astro emits these as meta-refresh pages, which work on any host. If you deploy
 somewhere that supports real 301s — Netlify or Cloudflare `_redirects`,
 Vercel `vercel.json` — move them there instead; 301s pass on more SEO value.
 
-### 5. Set the domain
+### 6. Set the domain
 
 `site:` in `astro.config.mjs` is `https://northernsoulrenovation.com`. It
 feeds the canonical tags, the sitemap and the Open Graph URLs, so it has to
