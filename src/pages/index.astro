@@ -313,11 +313,37 @@ const whyPoints = [
     transform: translate3d(0, var(--parallax-y, 0), 0);
   }
   .hero__scrim { position: absolute; inset: 0; }
+  /* The handoff's scrim was tuned for a dim hero photo. The photo in use is a
+     bright, sunlit interior, and Beam Blue on the lit island measured 1.9:1
+     behind "Built to last." — below the 3:1 floor for large text. Two extra
+     stops hold the gradient dark across the full width of the headline
+     (max-width 19ch, so roughly 70% of the viewport) and then release to the
+     handoff's .35 at the right edge, so the photo still reads. */
   .hero__scrim--h {
-    background: linear-gradient(100deg, rgba(11,13,16,.94) 0%, rgba(11,13,16,.82) 42%, rgba(11,13,16,.35) 100%);
+    background: linear-gradient(
+      100deg,
+      rgba(11,13,16,.94) 0%,
+      rgba(11,13,16,.88) 45%,
+      rgba(11,13,16,.62) 72%,
+      rgba(11,13,16,.35) 100%
+    );
   }
   .hero__scrim--v {
     background: linear-gradient(180deg, rgba(11,13,16,.5) 0%, rgba(11,13,16,0) 30%, rgba(11,13,16,.75) 100%);
+  }
+
+  /* Narrow screens wrap the headline across almost the full width, pushing the
+     last line into the light end of the gradient. Hold it dark throughout —
+     there is little photo visible beside the text at this size anyway. */
+  @media (max-width: 760px) {
+    .hero__scrim--h {
+      background: linear-gradient(
+        100deg,
+        rgba(11,13,16,.94) 0%,
+        rgba(11,13,16,.90) 55%,
+        rgba(11,13,16,.74) 100%
+      );
+    }
   }
   .hero__inner {
     position: relative;

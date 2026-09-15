@@ -79,18 +79,17 @@ for spam, email and phone validation, partial answers saved to
 `sessionStorage`, and a `estimate_submitted` conversion event pushed to
 `window.dataLayer` on success.
 
-### 2. Two photos still outstanding
+### 2. One photo still outstanding
 
-Eight of the ten photo slots are filled with the client's own photography.
-**Two still show a dark "PHOTO PENDING" card:**
+Nine of the ten photo slots are filled. **One still shows a dark "PHOTO
+PENDING" card:**
 
 | Filename | What it needs to be | Used on |
 |---|---|---|
-| `hero-interior.jpg` | Wide, moodier interior. It sits under a dark gradient with white text over it, so a bright shot will fight the headline. | Home hero (full-bleed) |
 | `crew-site.jpg` | Crew at work on site. | Home "A family name on every job site", About band |
 
-Both still exist on the client's old Squarespace CDN — which will stop working
-when that subscription lapses. To pull them in, from a machine with normal
+It still exists on the client's old Squarespace CDN — which will stop working
+when that subscription lapses. To pull it in, from a machine with normal
 internet access:
 
 ```bash
@@ -98,15 +97,16 @@ bash scripts/fetch-photos.sh
 npm run build
 ```
 
-Or drop your own files in with those exact names. **Replacing any photo is
-just dropping a file into `public/images/` with the matching filename** — the
-code references filenames, so nothing else changes.
+Or drop your own file in with that exact name. **Replacing any photo is just
+dropping a file into `public/images/` with the matching filename** — the code
+references filenames, so nothing else changes.
 
-Photos already in place: `kitchen-island.jpg`, `kitchen-shaker.jpg`,
-`bathroom-shower.jpg`, `vanity-mirror.jpg`, `bedroom-suite.jpg`, `gym.jpg`,
-`design-planning.jpg`, `norbert.jpg`, plus `kitchen-before.jpg`,
-`microcement-wetroom.jpg`, `microcement-wall-floor.jpg` and `michelle.png`
-from the handoff bundle.
+A caution if you swap the hero photo (`hero-interior.jpg`): white and Beam
+Blue headline text sits over its left side, and the gradients above it are
+tuned for the current image. The supplied photo is bright enough that the
+handoff's original gradient dropped "Built to last." to 2.9:1 contrast on a
+phone, below the 3:1 floor for large text. If you change that image, re-check
+the headline is still legible at 390px wide before shipping it.
 
 ### 3. The before/after slider is not a matched pair
 
